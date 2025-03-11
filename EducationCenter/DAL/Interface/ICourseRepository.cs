@@ -10,5 +10,8 @@ namespace DAL.Interface
     public interface ICourseRepository : IRepository<Course>
     {
         Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId);
+        Task<IEnumerable<Course>> GetCoursesByLecturerAsync(int lecturerId);
+        Task<IEnumerable<Course>> GetAllWithDetailsAsync();
+        Task<Course?> GetByIdWithDetailsAsync(int id);
     }
 }

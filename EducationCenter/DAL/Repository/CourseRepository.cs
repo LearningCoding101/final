@@ -16,7 +16,36 @@ namespace DAL.Repository
 
         public async Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId)
         {
-            return await _context.Courses.Where(c => c.CategoryId == categoryId).ToListAsync();
+            return await _context.Set<Course>()
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .Where(c => c.CategoryId == categoryId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Course>> GetCoursesByLecturerAsync(int lecturerId)
+        {
+            return await _context.Set<Course>()
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .Where(c => c.LecturerId == lecturerId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Course>> GetAllWithDetailsAsync()
+        {
+            return await _context.Set<Course>()
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .ToListAsync();
+        }
+
+        public async Task<Course?> GetByIdWithDetailsAsync(int id)
+        {
+            return await _context.Set<Course>()
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

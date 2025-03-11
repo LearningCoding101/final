@@ -1,3 +1,5 @@
+using BLL.Interface;
+using BLL.Service;
 using DAL.Data;
 using DAL.Interface;
 using DAL.UnitOfWork;
@@ -20,6 +22,9 @@ namespace EducationCenter
 
             // Register the UnitOfWork
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Register the JwtService
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
             var app = builder.Build();
 
