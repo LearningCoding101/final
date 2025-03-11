@@ -1,3 +1,8 @@
+using DAL.Data;
+using DAL.Interface;
+using DAL.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
+
 namespace EducationCenter
 {
     public class Program
@@ -8,6 +13,13 @@ namespace EducationCenter
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Register the DbContext
+            builder.Services.AddDbContext<Context>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register the UnitOfWork
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 

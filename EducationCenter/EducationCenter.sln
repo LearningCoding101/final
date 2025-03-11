@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationCenter", "EducationCenter\EducationCenter.csproj", "{CE1E4572-21C6-4B15-84E4-58E3C4029385}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{59E42A90-46B2-47B7-B63D-AAACE8EE71EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{CCD8F01C-9E8D-4D1F-A7D1-8062EEAEEFDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CE1E4572-21C6-4B15-84E4-58E3C4029385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1E4572-21C6-4B15-84E4-58E3C4029385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE1E4572-21C6-4B15-84E4-58E3C4029385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59E42A90-46B2-47B7-B63D-AAACE8EE71EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59E42A90-46B2-47B7-B63D-AAACE8EE71EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59E42A90-46B2-47B7-B63D-AAACE8EE71EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59E42A90-46B2-47B7-B63D-AAACE8EE71EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD8F01C-9E8D-4D1F-A7D1-8062EEAEEFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD8F01C-9E8D-4D1F-A7D1-8062EEAEEFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD8F01C-9E8D-4D1F-A7D1-8062EEAEEFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD8F01C-9E8D-4D1F-A7D1-8062EEAEEFDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
