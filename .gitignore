@@ -1,0 +1,74 @@
+# Build artifacts
+bin/
+obj/
+out/
+
+# User-specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+log/
+
+# Compiled files
+*.dll
+*.exe
+*.pdb
+*.appx
+*.appxbundle
+*.msi
+*.nupkg
+*.snupkg
+*.swp
+*.bak
+*.cache
+*.ilk
+*.log
+*.map
+*.dmp
+*.csproj.user
+
+# Dependency directories
+node_modules/
+bower_components/
+jspm_packages/
+
+# NuGet Packages
+*.nupkg
+packages/
+.nuget/
+
+# Publish artifacts
+publish/
+wwwroot/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# Resharper
+*.DotSettings.user
+_ReSharper.Caches/
+
+# Entity Framework Migrations
+Migrations/
+
+# Database
+*.mdf
+*.ldf
+*.sqlite
+*.db
