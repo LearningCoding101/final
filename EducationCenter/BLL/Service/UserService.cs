@@ -147,5 +147,34 @@ namespace EducationCenter.BLL.Service
         {
             return true;
         }
+
+        public async Task<IEnumerable<UserDto>> GetAllUserAsync()
+        {
+            var users = await _unitOfWork.Users.GetAllAsync();
+
+            return users.Select(d => new UserDto
+            {
+                Id = d.Id,
+                Email = d.Email,
+                FullName = d.FullName,
+                Role = d.Role,
+                ProfilePictureUrl = d.ProfilePictureUrl,
+                DepartmentId = d.DepartmentId ?? 0
+            }).ToList();
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            if (user != null)
+            {
+                _unitOfWork.Users.Delete(user);
+                _unitOfWork.SaveChangesAsync();
+                return true;
+
+            }
+            _unitOfWork.SaveChangesAsync();
+            return false;
+        }
     }
 }
