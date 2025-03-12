@@ -18,5 +18,10 @@ namespace DAL.Repository
         {
             return await _context.Discussions.Where(d => d.CourseId == courseId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Discussion>> GetDiscussionsByUserIdAsync(int userId)
+        {
+            return await _context.Discussions.Where(d => d.UserId == userId).ToListAsync();
+        }
     }
 }

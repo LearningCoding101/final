@@ -9,6 +9,8 @@ namespace DAL.Interface
 {
     public interface IDiscussionRepository : IRepository<Discussion>
     {
+        Task<IEnumerable<Discussion>> GetDiscussionsByUserIdAsync(int userId);
+
         Task<IEnumerable<Discussion>> GetDiscussionsByCourseIdAsync(int courseId);
     }
 

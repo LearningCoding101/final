@@ -10,5 +10,7 @@ namespace DAL.Interface
     public interface IEnrollmentRepository : IRepository<Enrollment>
     {
         Task<IEnumerable<Enrollment>> GetEnrollmentsByUserIdAsync(int userId);
+        Task<IEnumerable<Enrollment>> GetByCourseAsync(int courseId);
+
     }
 }
