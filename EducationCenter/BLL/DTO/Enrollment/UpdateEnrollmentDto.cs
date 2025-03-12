@@ -10,5 +10,7 @@ namespace BLL.DTO.Enrollment
     {
         public string? PaymentStatus { get; set; } // Paid, Pending, Canceled
         public int? Progress { get; set; } // Update progress (0 - 100)
+
+        public string? Status { get; set; }
     }
 }

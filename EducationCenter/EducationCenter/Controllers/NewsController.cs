@@ -1,7 +1,6 @@
 ﻿using BLL.DTO.News;
 using BLL.Interface;
-using EducationCenter.BLL.Interfaces;
-using EducationCenter.DTOs;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

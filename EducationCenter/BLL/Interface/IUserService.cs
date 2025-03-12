@@ -19,5 +19,7 @@ namespace BLL.Interface
         Task<bool> ChangePasswordAsync(ChangePasswordDto passwordDto);
         Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+
+        Task<bool> DeleteUserAsync(int id);
     }
 }

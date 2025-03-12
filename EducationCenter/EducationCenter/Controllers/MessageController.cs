@@ -1,7 +1,5 @@
 ﻿using BLL.DTO.Message;
 using BLL.Interface;
-using EducationCenter.BLL.Interfaces;
-using EducationCenter.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -42,7 +40,7 @@ namespace EducationCenter.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int messageId, int discussionId)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var result = await _messageService.DeleteMessageAsync(messageId, userId);
             if (!result)
             {
