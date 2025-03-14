@@ -1,11 +1,10 @@
 ﻿using BLL.DTO.Course;
+using BLL.DTO.CourseCategory;
 using BLL.Interface;
 using DAL.Entities;
 using DAL.Interface;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Service
@@ -22,7 +21,6 @@ namespace BLL.Service
         public async Task<IEnumerable<CourseListDto>> GetAllCoursesAsync()
         {
             var courses = await _unitOfWork.Courses.GetAllWithDetailsAsync();
-
             return courses.Select(course => new CourseListDto
             {
                 Id = course.Id,
@@ -116,7 +114,6 @@ namespace BLL.Service
         public async Task<IEnumerable<CourseListDto>> GetCoursesByCategoryAsync(int categoryId)
         {
             var courses = await _unitOfWork.Courses.GetCoursesByCategoryAsync(categoryId);
-
             return courses.Select(course => new CourseListDto
             {
                 Id = course.Id,
@@ -131,7 +128,6 @@ namespace BLL.Service
         public async Task<IEnumerable<CourseListDto>> GetCoursesByLecturerAsync(int lecturerId)
         {
             var courses = await _unitOfWork.Courses.GetCoursesByLecturerAsync(lecturerId);
-
             return courses.Select(course => new CourseListDto
             {
                 Id = course.Id,
@@ -142,6 +138,16 @@ namespace BLL.Service
                 CategoryName = course.Category.Name
             });
         }
-    }
 
+        public async Task<IEnumerable<CourseCategoryDto>> GetAllCategoriesAsync()
+        {
+            var categories = await _unitOfWork.CourseCategories.GetAllCategoriesAsync();
+            return categories.Select(category => new CourseCategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description
+            });
+        }
+    }
 }

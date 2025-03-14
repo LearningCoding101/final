@@ -1,7 +1,10 @@
 ﻿using BLL.DTO.Course;
+using BLL.DTO.Enrollment;
 using BLL.Interface;
+using EducationCenter.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EducationCenter.Controllers
 {
@@ -9,11 +12,13 @@ namespace EducationCenter.Controllers
     {
         private readonly ICourseService _courseService;
 
+        private readonly IEnrollmentService _enrollmentService;
         private readonly ILogger<CourseController> _logger;
 
-        public CourseController(ICourseService courseService, ILogger<CourseController> logger)
+        public CourseController(ICourseService courseService, IEnrollmentService enrollmentService, ILogger<CourseController> logger)
         {
             _courseService = courseService;
+            _enrollmentService = enrollmentService;
             _logger = logger;
         }
 
@@ -102,5 +107,45 @@ namespace EducationCenter.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> TrainingPrograms()
+        {
+            var courses = await _courseService.GetAllCoursesAsync();
+            var categories = await _courseService.GetAllCategoriesAsync();
+            var viewModel = new TrainingProgramsViewModel
+            {
+                Courses = courses,
+                Categories = categories
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> Enroll(int courseId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var result = await _enrollmentService.EnrollStudentAsync(new CreateEnrollmentDto
+            {
+                CourseId = courseId,
+                UserId = Int32.Parse(userId)
+            });
+            if (result == null)
+            {
+                TempData["Error"] = "Unsuccessful enrollment";
+                return RedirectToAction("Details", "Course", new { id = courseId });
+            }
+
+            return RedirectToAction("MyCourses", "Enrollment");
+        }
+
+
+
     }
+
 }

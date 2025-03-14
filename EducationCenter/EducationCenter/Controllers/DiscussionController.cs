@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace EducationCenter.Controllers
 {
+
     [Authorize]
     public class DiscussionController : Controller
     {
@@ -62,7 +63,7 @@ namespace EducationCenter.Controllers
             return RedirectToAction("Index", new { courseId = discussionDto.CourseId });
         }
 
-        
+
         [Authorize(Roles = "Admin,Lecturer")]
         [HttpPost]
         public async Task<IActionResult> Delete(int discussionId, int courseId)

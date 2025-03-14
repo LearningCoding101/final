@@ -124,9 +124,9 @@ namespace BLL.Service
             {
                 Id = e.Id,
                 UserId = e.UserId,
-                StudentName = e.User.FullName,
+                StudentName = e.User?.FullName ?? "Unknown",
                 CourseId = e.CourseId,
-                CourseTitle = e.Course.Title,
+                CourseTitle = e.Course?.Title ?? "Unknown",
                 EnrollmentDate = e.EnrollmentDate,
                 PaymentStatus = e.PaymentStatus,
                 Progress = e.Progress

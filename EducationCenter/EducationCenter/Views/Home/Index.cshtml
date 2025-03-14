@@ -1,8 +1,73 @@
-﻿@{
+﻿@model EducationCenter.Models.HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <!-- Banner Section -->
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to Education Center</h1>
+        <p class="lead">Empowering your future with quality education.</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+
+    <!-- Mission & Vision Section -->
+    <section id="mission-vision" class="my-5">
+        <h2>Our Mission & Vision</h2>
+        <p>Our mission is to provide high-quality education that empowers students to achieve their full potential. Our
+            vision is to be a leading educational institution recognized for excellence in teaching, learning, and
+            research.</p>
+    </section>
+
+    <!-- Popular Courses Section -->
+    <section id="popular-courses" class="my-5">
+        <h2>Popular Courses</h2>
+        <div class="row">
+            @foreach (var course in Model.PopularCourses)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+@*                         <img class="card-img-top" src="@course." alt="Course Image">
+ *@                        <div class="card-body">
+                            <h5 class="card-title">@course.Title</h5>
+                            <p class="card-text">@course.CategoryName - @course.LecturerName</p>
+                            <p class="card-text">Price: @course.Price</p>
+                            <a href="@Url.Action("Details", "Course", new { id = course.Id })"
+                                class="btn btn-primary">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- Latest News & Events Section -->
+    <section id="news-events" class="my-5">
+        <h2>Latest News & Events</h2>
+        <div class="list-group">
+            @foreach (var news in Model.LatestNews)
+            {
+                <a href="@Url.Action("Details", "News", new { id = news.Id })"
+                    class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">@news.Title</h5>
+                    <p class="mb-1">@news.Content</p>
+                    <small>Published on: @news.PublishDate.ToString("MMMM dd, yyyy")</small>
+                    @if (news.Type == "Event" && news.EventDate.HasValue)
+                    {
+                        <small>Event Date: @news.EventDate.Value.ToString("MMMM dd, yyyy")</small>
+                        <small>Location: @news.EventLocation</small>
+                    }
+                </a>
+            }
+        </div>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section id="cta" class="my-5 text-center">
+        <h2>Get Started with Education Center</h2>
+        <p>Join us today and start your journey towards a brighter future.</p>
+        <a class="btn btn-success btn-lg" href="@Url.Action("Register", "User")" role="button">Sign Up</a>
+        <a class="btn btn-info btn-lg" href="@Url.Action("Contact", "Home")" role="button">Contact Us</a>
+    </section>
 </div>

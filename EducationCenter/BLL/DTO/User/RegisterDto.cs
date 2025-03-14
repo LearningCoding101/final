@@ -20,10 +20,10 @@ namespace BLL.DTO.User
 
         public string Role { get; set; } = "Student"; // Default role is "Student"
 
-        public string ProfilePictureUrl { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string ProfilePictureUrl { get; set; } = "";
 
-        [Required]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
     }
 
 }

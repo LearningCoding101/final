@@ -24,10 +24,10 @@ namespace DAL.Entities
         public User Lecturer { get; set; }
 
         // Relationships
-        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
-        public ICollection<CourseMaterial> Materials { get; set; } = new List<CourseMaterial>();
-        public ICollection<CourseSchedule> Schedules { get; set; } = new List<CourseSchedule>();
-        public ICollection<Discussion> Discussions { get; set; } = new List<Discussion>();
+        public ICollection<Enrollment>? Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<CourseMaterial>? Materials { get; set; } = new List<CourseMaterial>();
+        public ICollection<CourseSchedule>? Schedules { get; set; } = new List<CourseSchedule>();
+        public ICollection<Discussion>? Discussions { get; set; } = new List<Discussion>();
     }
 
 

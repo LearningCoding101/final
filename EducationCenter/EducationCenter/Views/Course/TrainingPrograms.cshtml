@@ -1,0 +1,191 @@
+@model EducationCenter.Models.TrainingProgramsViewModel
+@{
+    ViewData["Title"] = "Training Programs";
+}
+
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 fw-bold text-center">Training Programs</h1>
+            <p class="text-center text-muted">Explore our diverse range of educational courses</p>
+        </div>
+    </div>
+
+    <!-- Categories Carousel Section -->
+    <section id="course-categories" class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h3 fw-bold">Categories</h2>
+            <div>
+                <button class="btn btn-sm btn-outline-primary category-prev">
+                    <i class="bi bi-chevron-left"></i> Previous
+                </button>
+                <button class="btn btn-sm btn-outline-primary category-next">
+                    Next <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="categories-carousel">
+            <div class="row flex-nowrap overflow-hidden" id="categories-slider">
+                @foreach (var category in Model.Categories)
+                {
+                    <div class="col-md-3 col-sm-6 px-2 category-item">
+                        <div class="card shadow-sm h-100 border-0 rounded-lg hover-shadow">
+                            <div class="card-body text-center">
+                                <div class="category-icon mb-3">
+                                    <i class="bi bi-journal-text fs-1 text-primary"></i>
+                                </div>
+                                <h5 class="card-title fw-bold">@category.Name</h5>
+                                <p class="card-text small text-muted">@(Model.Courses.Count(c => c.CategoryName == category.Name)) courses available</p>
+                                <a href="#@category.Name.Replace(" ", "-")" class="btn btn-primary w-100">View Courses</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses by Category Sections -->
+    @foreach (var category in Model.Categories)
+    {
+        <section id="@category.Name.Replace(" ", "-")" class="mb-5 pt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h3 fw-bold">@category.Name</h2>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary course-prev-@category.Name.Replace(" ", "-")">
+                        <i class="bi bi-chevron-left"></i> Previous
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary course-next-@category.Name.Replace(" ", "-")">
+                        Next <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="courses-carousel">
+                <div class="row flex-nowrap overflow-hidden" id="courses-slider-@category.Name.Replace(" ", "-")">
+                    @foreach (var course in Model.Courses.Where(c => c.CategoryName == category.Name))
+                    {
+                        <div class="col-lg-4 col-md-6 px-2 course-item">
+                            <div class="card h-100 shadow-sm border-0 rounded-lg hover-scale">
+                                <div class="card-header bg-light p-3">
+                                    <span class="badge bg-primary float-end">@course.Type</span>
+                                    <h5 class="card-title fw-bold mb-0 text-truncate">@course.Title</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="avatar me-2">
+                                            <i class="bi bi-person-circle text-secondary fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0 small fw-bold">@course.LecturerName</p>
+                                            <p class="mb-0 small text-muted">Instructor</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="fw-bold text-primary fs-5">@course.Price</span>
+                                    </div>
+                                    <a href="@Url.Action("Details", "Course", new { id = course.Id })" class="btn btn-outline-primary w-100 mb-2">View Details</a>
+                                    @if (User.IsInRole("Student"))
+                                    {
+                                        <form asp-action="Enroll" method="post">
+                                            <input type="hidden" name="courseId" value="@course.Id" />
+                                            <button type="submit" class="btn btn-success w-100">
+                                                <i class="bi bi-journal-check me-1"></i> Enroll Now
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category carousel navigation
+            const categorySlider = document.getElementById('categories-slider');
+            const categoryItems = document.querySelectorAll('.category-item');
+            const categoryPrev = document.querySelector('.category-prev');
+            const categoryNext = document.querySelector('.category-next');
+            
+            let categoryPosition = 0;
+            const categoryItemWidth = categoryItems[0].offsetWidth;
+            const categoryVisibleItems = Math.floor(categorySlider.offsetWidth / categoryItemWidth);
+            const categoryMaxPosition = Math.max(0, categoryItems.length - categoryVisibleItems);
+            
+            categoryPrev.addEventListener('click', function() {
+                categoryPosition = Math.max(0, categoryPosition - 1);
+                categorySlider.style.transform = `translateX(-${categoryPosition * categoryItemWidth}px)`;
+            });
+            
+            categoryNext.addEventListener('click', function() {
+                categoryPosition = Math.min(categoryMaxPosition, categoryPosition + 1);
+                categorySlider.style.transform = `translateX(-${categoryPosition * categoryItemWidth}px)`;
+            });
+            
+            // Course carousels navigation for each category
+            @foreach (var category in Model.Categories)
+            {
+                <text>
+                const courseSlider_@(category.Name.Replace(" ", "_")) = document.getElementById('courses-slider-@(category.Name.Replace(" ", "-"))');
+                const courseItems_@(category.Name.Replace(" ", "_")) = courseSlider_@(category.Name.Replace(" ", "_")).querySelectorAll('.course-item');
+                const coursePrev_@(category.Name.Replace(" ", "_")) = document.querySelector('.course-prev-@(category.Name.Replace(" ", "-"))');
+                const courseNext_@(category.Name.Replace(" ", "_")) = document.querySelector('.course-next-@(category.Name.Replace(" ", "-"))');
+                
+                let coursePosition_@(category.Name.Replace(" ", "_")) = 0;
+                const courseItemWidth_@(category.Name.Replace(" ", "_")) = courseItems_@(category.Name.Replace(" ", "_"))[0]?.offsetWidth || 0;
+                const courseVisibleItems_@(category.Name.Replace(" ", "_")) = Math.floor(courseSlider_@(category.Name.Replace(" ", "_")).offsetWidth / courseItemWidth_@(category.Name.Replace(" ", "_")));
+                const courseMaxPosition_@(category.Name.Replace(" ", "_")) = Math.max(0, courseItems_@(category.Name.Replace(" ", "_")).length - courseVisibleItems_@(category.Name.Replace(" ", "_")));
+                
+                coursePrev_@(category.Name.Replace(" ", "_"))?.addEventListener('click', function() {
+                    coursePosition_@(category.Name.Replace(" ", "_")) = Math.max(0, coursePosition_@(category.Name.Replace(" ", "_")) - 1);
+                    courseSlider_@(category.Name.Replace(" ", "_")).style.transform = `translateX(-${coursePosition_@(category.Name.Replace(" ", "_")) * courseItemWidth_@(category.Name.Replace(" ", "_"))}px)`;
+                });
+                
+                courseNext_@(category.Name.Replace(" ", "_"))?.addEventListener('click', function() {
+                    coursePosition_@(category.Name.Replace(" ", "_")) = Math.min(courseMaxPosition_@(category.Name.Replace(" ", "_")), coursePosition_@(category.Name.Replace(" ", "_")) + 1);
+                    courseSlider_@(category.Name.Replace(" ", "_")).style.transform = `translateX(-${coursePosition_@(category.Name.Replace(" ", "_")) * courseItemWidth_@(category.Name.Replace(" ", "_"))}px)`;
+                });
+                </text>
+            }
+        });
+    </script>
+
+    <style>
+        /* Carousel Styles */
+        .categories-carousel, .courses-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #categories-slider, [id^="courses-slider-"] {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-shadow:hover {
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        
+        .hover-scale:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        
+        /* Make sure we have smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Card styling */
+        .card {
+            transition: all 0.3s ease;
+        }
+    </style>
+}

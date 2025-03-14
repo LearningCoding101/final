@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace EducationCenter.Controllers
 {
+
     [Authorize]
     public class MessageController : Controller
     {

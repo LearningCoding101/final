@@ -3,6 +3,9 @@ using BLL.Service;
 using DAL.Data;
 using DAL.Interface;
 using DAL.UnitOfWork;
+using EducationCenter.BLL.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationCenter
@@ -25,6 +28,25 @@ namespace EducationCenter
 
             // Register the JwtService
             builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<IPasswordHasher<DAL.Entities.User>, PasswordHasher<DAL.Entities.User>>();
+
+            // Register the UserService
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+            builder.Services.AddScoped<ICourseMaterialService, CourseMaterialService>();
+            builder.Services.AddScoped<IDiscussionService, DiscussionService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<INewsService, NewsService>();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/User/Login";
+                    options.AccessDeniedPath = "/User/AccessDenied";
+                });
+
 
             var app = builder.Build();
 

@@ -1,0 +1,59 @@
+﻿@using BLL.DTO.User
+
+@model UserDto
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Profile</h1>
+
+<div>
+    <img src="@Model.ProfilePictureUrl" alt="Profile Picture" class="img-thumbnail" />
+    <h4>@Model.FullName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2"></dt>
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-2">
+            Role
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Role
+        </dd>
+        <dt class="col-sm-2">
+            Department ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DepartmentId
+        </dd>
+    </dl>
+</div>
+
+@* <form asp-action="UpdateProfile" method="post">
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Role"></label>
+        <input asp-for="Role" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProfilePictureUrl"></label>
+        <input asp-for="ProfilePictureUrl" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartmentId"></label>
+        <input asp-for="DepartmentId" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form> *@

@@ -1,4 +1,5 @@
 ﻿using BLL.DTO.Course;
+using BLL.DTO.CourseCategory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace BLL.Interface
         Task<bool> DeleteCourseAsync(int id);
         Task<IEnumerable<CourseListDto>> GetCoursesByCategoryAsync(int categoryId);
         Task<IEnumerable<CourseListDto>> GetCoursesByLecturerAsync(int lecturerId);
+        Task<IEnumerable<CourseCategoryDto>> GetAllCategoriesAsync();
     }
 
 }

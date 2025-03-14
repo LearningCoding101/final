@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Interface
 {
-    public interface ICourseCategoryRepository : IRepository<CourseCategory> { }
+    public interface ICourseCategoryRepository : IRepository<CourseCategory>
+    {
+        Task<IEnumerable<CourseCategory>> GetAllCategoriesAsync();
+
+    }
 
 }

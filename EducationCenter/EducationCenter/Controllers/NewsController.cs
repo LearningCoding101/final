@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EducationCenter.Controllers
 {
+
     [Authorize(Roles = "Admin")]
     public class NewsController : Controller
     {

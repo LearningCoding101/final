@@ -1,13 +1,14 @@
 ﻿using BLL.DTO.User;
 using BLL.Interface;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace EducationCenter.Controllers
 {
-    [ApiController]
+
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -19,8 +20,55 @@ namespace EducationCenter.Controllers
             _userService = userService;
             _logger = logger;
         }
+        [HttpGet]
+        [AllowAnonymous]
 
-        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(loginDto);
+            }
+
+            var authResponse = await _userService.AuthenticateAsync(loginDto);
+            if (authResponse == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(loginDto);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, authResponse.User.Id.ToString()),
+                new Claim(ClaimTypes.Name, authResponse.User.Email),
+                new Claim(ClaimTypes.Role, authResponse.User.Role)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = authResponse.Expiration
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+            if (authResponse.User.Role == "Student")
+            {
+                return RedirectToAction("Dashboard", "Student");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        /*        [Authorize(Roles = "Admin")]
+        */
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllUserAsync();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EducationCenter.Controllers
 {
+
     [Authorize(Roles = "Lecturer")]
     public class CourseMaterialController : Controller
     {
