@@ -1,40 +1,144 @@
 ﻿@model EducationCenter.Models.HomeViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="container">
-    <!-- Banner Section -->
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to Education Center</h1>
-        <p class="lead">Empowering your future with quality education.</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+<!-- Hero Section -->
+<section class="hero-section position-relative bg-primary text-white py-5 mb-5">
+    <div class="hero-pattern position-absolute top-0 start-0 w-100 h-100" style="background-image: url('/images/pattern.png'); opacity: 0.15;"></div>
+    <div class="container position-relative py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <span class="badge bg-warning text-dark mb-3 px-3 py-2 fs-6">Discover Your Potential</span>
+                <h1 class="display-4 fw-bold mb-3">Excellence in Education for a Better Future</h1>
+                <p class="lead mb-4">Join our learning platform to gain skills that matter in today's competitive world. Expert instructors, flexible learning, and career-focused courses.</p>
+                <div class="d-flex gap-3">
+                    <a href="@Url.Action("TrainingPrograms", "Course")" class="btn btn-light btn-lg shadow-sm">Browse Courses</a>
+                    <a href="@Url.Action("Register", "User")" class="btn btn-outline-light btn-lg">Join Now</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="~/images/hero-illustration.svg" alt="Education Illustration" class="img-fluid" style="max-height: 400px;">
+            </div>
+        </div>
     </div>
+</section>
+
+<div class="container">
+    <!-- Stats Section -->
+    <section class="stats-section py-4 mb-5">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="display-4 fw-bold text-primary mb-2">1200+</div>
+                        <p class="text-muted mb-0">Students</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="display-4 fw-bold text-primary mb-2">120+</div>
+                        <p class="text-muted mb-0">Courses</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="display-4 fw-bold text-primary mb-2">50+</div>
+                        <p class="text-muted mb-0">Expert Lecturers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body py-4">
+                        <div class="display-4 fw-bold text-primary mb-2">95%</div>
+                        <p class="text-muted mb-0">Success Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Mission & Vision Section -->
-    <section id="mission-vision" class="my-5">
-        <h2>Our Mission & Vision</h2>
-        <p>Our mission is to provide high-quality education that empowers students to achieve their full potential. Our
-            vision is to be a leading educational institution recognized for excellence in teaching, learning, and
-            research.</p>
+    <section class="my-5 py-3">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtRB4ywOLz1dsou2BDYl27hn5ymk1V8f6bpA&s" alt="Mission and Vision" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <span class="badge bg-primary px-3 py-2">Our Values</span>
+                    <h2 class="h1 fw-bold mt-3">Our Mission & Vision</h2>
+                    <div class="border-bottom border-primary mb-4" style="width: 80px; height: 4px;"></div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="bg-light rounded p-3 text-primary">
+                            <i class="bi bi-bullseye fs-3"></i>
+                        </div>
+                    </div>
+                    <div class="ms-4">
+                        <h3 class="h5 fw-bold">Our Mission</h3>
+                        <p>To provide high-quality education that empowers students to achieve their full potential through innovative teaching methods and a supportive learning environment.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <div class="bg-light rounded p-3 text-primary">
+                            <i class="bi bi-eye fs-3"></i>
+                        </div>
+                    </div>
+                    <div class="ms-4">
+                        <h3 class="h5 fw-bold">Our Vision</h3>
+                        <p>To be a leading educational institution recognized globally for excellence in teaching, learning, and research, preparing students to meet the challenges of tomorrow.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Popular Courses Section -->
-    <section id="popular-courses" class="my-5">
-        <h2>Popular Courses</h2>
-        <div class="row">
+    <section class="my-5 py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-primary px-3 py-2">Learn With Us</span>
+                <h2 class="h1 fw-bold mt-2 mb-0">Popular Courses</h2>
+            </div>
+            <a href="@Url.Action("TrainingPrograms", "Course")" class="btn btn-outline-primary">View All Courses <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+
+        <div class="row g-4">
             @foreach (var course in Model.PopularCourses)
             {
-                <div class="col-md-4">
-                    <div class="card">
-@*                         <img class="card-img-top" src="@course." alt="Course Image">
- *@                        <div class="card-body">
-                            <h5 class="card-title">@course.Title</h5>
-                            <p class="card-text">@course.CategoryName - @course.LecturerName</p>
-                            <p class="card-text">Price: @course.Price</p>
-                            <a href="@Url.Action("Details", "Course", new { id = course.Id })"
-                                class="btn btn-primary">Enroll Now</a>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card course-card border-0 shadow-sm h-100">
+
+                            <div class="bg-light text-center py-5">
+                                <i class="bi bi-journal-text text-secondary" style="font-size: 4rem;"></i>
+                            </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-primary">@course.CategoryName</span>
+                                <span class="badge bg-@(course.Type == "Online" ? "info" : "success") text-white">@course.Type</span>
+                            </div>
+                            <h5 class="card-title fw-bold">@course.Title</h5>
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-person-fill me-1"></i> @course.LecturerName
+                            </p>
+                            @* <p class="card-text text-truncate">@course.</p> *@
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-primary">$@course.Price.ToString("0.00")</span>
+                                <a href="@Url.Action("Details", "Course", new { id = course.Id })" class="btn btn-primary btn-sm">View Details</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -43,31 +147,185 @@
     </section>
 
     <!-- Latest News & Events Section -->
-    <section id="news-events" class="my-5">
-        <h2>Latest News & Events</h2>
-        <div class="list-group">
+    <section class="my-5 py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-primary px-3 py-2">Stay Updated</span>
+                <h2 class="h1 fw-bold mt-2 mb-0">Latest News & Events</h2>
+            </div>
+            <a href="@Url.Action("Index", "News")" class="btn btn-outline-primary">View All News <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        
+        <div class="row g-4">
             @foreach (var news in Model.LatestNews)
             {
-                <a href="@Url.Action("Details", "News", new { id = news.Id })"
-                    class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">@news.Title</h5>
-                    <p class="mb-1">@news.Content</p>
-                    <small>Published on: @news.PublishDate.ToString("MMMM dd, yyyy")</small>
-                    @if (news.Type == "Event" && news.EventDate.HasValue)
-                    {
-                        <small>Event Date: @news.EventDate.Value.ToString("MMMM dd, yyyy")</small>
-                        <small>Location: @news.EventLocation</small>
-                    }
-                </a>
+                string cardClass = news.Type == "Event" ? "border-warning" : "border-info";
+                string dateFormat = news.Type == "Event" && news.EventDate.HasValue ? news.EventDate.Value.ToString("MMM dd, yyyy") : news.PublishDate.ToString("MMM dd, yyyy");
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(news.ThumbnailUrl))
+                            {
+                                <img src="@news.ThumbnailUrl" class="card-img-top" alt="@news.Title" style="height: 180px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="bg-light text-center py-5">
+                                    <i class="bi bi-newspaper text-secondary" style="font-size: 3rem;"></i>
+                                </div>
+                            }
+                            <div class="position-absolute top-0 start-0 m-3">
+                                <span class="badge bg-@(news.Type == "Event" ? "warning" : "info") text-@(news.Type == "Event" ? "dark" : "white")">
+                                    @news.Type
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@news.Title</h5>
+                            <p class="card-text text-muted small">
+                                <i class="bi bi-calendar me-1"></i> @dateFormat
+                                @if (news.Type == "Event" && !string.IsNullOrEmpty(news.EventLocation))
+                                {
+                                    <span class="ms-2"><i class="bi bi-geo-alt me-1"></i> @news.EventLocation</span>
+                                }
+                            </p>
+                            <p class="card-text">@(news.Content.Length > 100 ? $"{news.Content.Substring(0, 100)}..." : news.Content)</p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-link text-primary p-0">
+                                Read More <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="my-5 py-5 bg-light rounded">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-primary px-3 py-2">What Our Students Say</span>
+                <h2 class="h1 fw-bold mt-2 mb-0">Testimonials</h2>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="mb-3 text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="card-text fst-italic mb-4">"The courses offered here have transformed my career. The instructors are knowledgeable and supportive, and the curriculum is cutting-edge."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                        <span class="fw-bold">JD</span>
+                                    </div>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-0">John Doe</h6>
+                                    <p class="text-muted small mb-0">Web Development Student</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="mb-3 text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="card-text fst-italic mb-4">"I love the flexibility of learning at my own pace. The platform is intuitive, and the resources provided are comprehensive and practical."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                        <span class="fw-bold">JS</span>
+                                    </div>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-0">Jane Smith</h6>
+                                    <p class="text-muted small mb-0">Data Science Student</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="mb-3 text-warning">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p class="card-text fst-italic mb-4">"As a working professional, I appreciate the well-structured courses that fit into my busy schedule. I've gained skills that directly apply to my job."</p>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                        <span class="fw-bold">RJ</span>
+                                    </div>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-0">Robert Johnson</h6>
+                                    <p class="text-muted small mb-0">Business Management Student</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Call-to-Action Section -->
-    <section id="cta" class="my-5 text-center">
-        <h2>Get Started with Education Center</h2>
-        <p>Join us today and start your journey towards a brighter future.</p>
-        <a class="btn btn-success btn-lg" href="@Url.Action("Register", "User")" role="button">Sign Up</a>
-        <a class="btn btn-info btn-lg" href="@Url.Action("Contact", "Home")" role="button">Contact Us</a>
+    <section class="my-5 py-5 bg-primary text-white rounded">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-4">Start Your Learning Journey Today</h2>
+            <p class="lead mb-4">Join thousands of students already learning with us and transform your future.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a class="btn btn-light btn-lg px-4 shadow-sm" href="@Url.Action("Register", "User")" role="button">
+                    <i class="bi bi-person-plus me-2"></i>Sign Up Now
+                </a>
+                <a class="btn btn-outline-light btn-lg px-4" href="@Url.Action("Contact", "Home")" role="button">
+                    <i class="bi bi-chat-text me-2"></i>Contact Us
+                </a>
+            </div>
+        </div>
     </section>
 </div>
+
+@section Styles {
+    <style>
+        .course-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        }
+        
+        /* Make sure you create this file or use an alternative background */
+        .hero-pattern {
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+        }
+    </style>
+}

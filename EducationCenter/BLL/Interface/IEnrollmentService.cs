@@ -16,5 +16,7 @@ namespace BLL.Interface
         Task<EnrollmentDto> EnrollStudentAsync(CreateEnrollmentDto enrollmentDto);
         Task<bool> UpdateEnrollmentAsync(int id, UpdateEnrollmentDto enrollmentDto);
         Task<bool> DeleteEnrollmentAsync(int id);
+
+        Task<bool> UpdateProgressAsync(int enrollmentId, int progress);
     }
 }

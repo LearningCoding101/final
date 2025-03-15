@@ -12,10 +12,13 @@ namespace EducationCenter.Controllers
     public class DiscussionController : Controller
     {
         private readonly IDiscussionService _discussionService;
+
+        private readonly IMessageService _messageService;
         private readonly ILogger<DiscussionController> _logger;
 
-        public DiscussionController(IDiscussionService discussionService, ILogger<DiscussionController> logger)
+        public DiscussionController(IDiscussionService discussionService, IMessageService messageService, ILogger<DiscussionController> logger)
         {
+            _messageService = messageService;
             _discussionService = discussionService;
             _logger = logger;
         }
@@ -34,10 +37,12 @@ namespace EducationCenter.Controllers
             {
                 return NotFound();
             }
+            var messages = await _messageService.GetMessagesByDiscussionAsync(discussionId);
+            ViewBag.messages = messages;
             return View(discussion);
         }
         [Authorize(Roles = "Student,Lecturer")]
-        public IActionResult Create(Guid courseId)
+        public IActionResult Create(int courseId)
         {
             ViewBag.CourseId = courseId;
             return View();
@@ -47,10 +52,6 @@ namespace EducationCenter.Controllers
         [Authorize(Roles = "Student,Lecturer")]
         public async Task<IActionResult> Create(CreateDiscussionDto discussionDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(discussionDto);
-            }
 
             discussionDto.UserId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var result = await _discussionService.CreateDiscussionAsync(discussionDto);

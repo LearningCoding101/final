@@ -1,0 +1,338 @@
+@* @model EducationCenter.Models.StatisticsViewModel
+@{
+    ViewData["Title"] = "System Statistics";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">System Statistics</h1>
+                            <p class="text-muted mb-0">Detailed analytics and performance metrics</p>
+                        </div>
+                        <div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-calendar-range me-1"></i> @Model.PeriodName
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="@Url.Action("Statistics", "Admin", new { period = "week" })">This Week</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Statistics", "Admin", new { period = "month" })">This Month</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Statistics", "Admin", new { period = "quarter" })">This Quarter</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Statistics", "Admin", new { period = "year" })">This Year</a></li>
+                                </ul>
+                            </div>
+                            <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-outline-secondary ms-2">
+                                <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 fw-bold mb-0">Revenue Analysis</h2>
+                        <button class="btn btn-sm btn-outline-secondary" id="downloadRevenueBtn">
+                            <i class="bi bi-download me-1"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-1">Total Revenue</h6>
+                                    <h3 class="fw-bold mb-0">@Model.TotalRevenue.ToString("C0")</h3>
+                                    <div class="mt-2">
+                                        <span class="@(Model.RevenueGrowth >= 0 ? "text-success" : "text-danger")">
+                                            <i class="bi @(Model.RevenueGrowth >= 0 ? "bi-arrow-up" : "bi-arrow-down") me-1"></i>
+                                            @Math.Abs(Model.RevenueGrowth)%
+                                        </span>
+                                        <span class="text-muted ms-1">vs previous period</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-1">Avg. Per Course</h6>
+                                    <h3 class="fw-bold mb-0">@Model.AverageRevenuePerCourse.ToString("C0")</h3>
+                                    <div class="mt-2">
+                                        <span class="@(Model.AvgPerCourseGrowth >= 0 ? "text-success" : "text-danger")">
+                                            <i class="bi @(Model.AvgPerCourseGrowth >= 0 ? "bi-arrow-up" : "bi-arrow-down") me-1"></i>
+                                            @Math.Abs(Model.AvgPerCourseGrowth)%
+                                        </span>
+                                        <span class="text-muted ms-1">vs previous period</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-1">Transactions</h6>
+                                    <h3 class="fw-bold mb-0">@Model.TransactionCount</h3>
+                                    <div class="mt-2">
+                                        <span class="@(Model.TransactionGrowth >= 0 ? "text-success" : "text-danger")">
+                                            <i class="bi @(Model.TransactionGrowth >= 0 ? "bi-arrow-up" : "bi-arrow-down") me-1"></i>
+                                            @Math.Abs(Model.TransactionGrowth)%
+                                        </span>
+                                        <span class="text-muted ms-1">vs previous period</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-1">Conversion Rate</h6>
+                                    <h3 class="fw-bold mb-0">@Model.ConversionRate.ToString("0.0")%</h3>
+                                    <div class="mt-2">
+                                        <span class="@(Model.ConversionRateGrowth >= 0 ? "text-success" : "text-danger")">
+                                            <i class="bi @(Model.ConversionRateGrowth >= 0 ? "bi-arrow-up" : "bi-arrow-down") me-1"></i>
+                                            @Math.Abs(Model.ConversionRateGrowth)% pts
+                                        </span>
+                                        <span class="text-muted ms-1">vs previous period</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="height: 350px;">
+                        <canvas id="revenueDetailChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Engagement Section -->
+    <div class="row mb-4">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">User Engagement</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="userEngagementChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">Course Completion Rates</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="completionRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Top Courses & Categories -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">Top Performing Courses</h2>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Course</th>
+                                    <th class="text-center">Students</th>
+                                    <th class="text-end">Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var course in Model.TopCourses)
+                                {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="course-icon me-3 bg-light text-primary">
+                                                        <i class="bi bi-journal-text"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">@course.Title</h6>
+                                                        <small class="text-muted">@course.CategoryName</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">@course.StudentCount</td>
+                                            <td class="text-end fw-bold">@course.Revenue.ToString("C0")</td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">Category Performance</h2>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-center">Courses</th>
+                                    <th class="text-center">Enrollments</th>
+                                    <th class="text-end">Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var category in Model.CategoryPerformance)
+                                {
+                                        <tr>
+                                            <td>@category.Name</td>
+                                            <td class="text-center">@category.CourseCount</td>
+                                            <td class="text-center">@category.EnrollmentCount</td>
+                                            <td class="text-end fw-bold">@category.Revenue.ToString("C0")</td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Revenue Detail Chart
+                const revenueCtx = document.getElementById('revenueDetailChart').getContext('2d');
+                const revenueChart = new Chart(revenueCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: @Json.Serialize(Model.RevenueChartLabels),
+                        datasets: [{
+                            label: 'Revenue',
+                            data: @Json.Serialize(Model.RevenueChartData),
+                            backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                            borderColor: 'rgba(13, 110, 253, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            
+                // User Engagement Chart
+                const engagementCtx = document.getElementById('userEngagementChart').getContext('2d');
+                const engagementChart = new Chart(engagementCtx, {
+                    type: 'line',
+                    data: {
+                        labels: @Json.Serialize(Model.EngagementChartLabels),
+                        datasets: [
+                            {
+                                label: 'New Users',
+                                data: @Json.Serialize(Model.NewUsersData),
+                                borderColor: 'rgba(13, 110, 253, 1)',
+                                backgroundColor: 'transparent',
+                                borderWidth: 2,
+                                pointBackgroundColor: '#ffffff',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Active Users',
+                                data: @Json.Serialize(Model.ActiveUsersData),
+                                borderColor: 'rgba(25, 135, 84, 1)',
+                                backgroundColor: 'transparent',
+                                borderWidth: 2,
+                                pointBackgroundColor: '#ffffff',
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            
+                // Course Completion Rate Chart
+                const completionCtx = document.getElementById('completionRateChart').getContext('2d');
+                const completionChart = new Chart(completionCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed', 'In Progress', 'Not Started'],
+                        datasets: [{
+                            data: [@Model.CompletedCourses, @Model.InProgressCourses, @Model.NotStartedCourses],
+                            backgroundColor: [
+                                'rgba(25, 135, 84, 0.8)',
+                                'rgba(255, 193, 7, 0.8)',
+                                'rgba(173, 181, 189, 0.8)'
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            
+                // Export Button
+                document.getElementById('downloadRevenueBtn').addEventListener('click', function() {
+                    // Implementation for exporting data
+                    alert('Export functionality would be implemented here');
+                });
+            });
+        </script>
+}
+
+@section Styles {
+        <style>
+            .course-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+} *@

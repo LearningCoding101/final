@@ -22,7 +22,9 @@ namespace EducationCenter.BLL.Service
         public async Task<AuthResponseDto?> AuthenticateAsync(LoginDto loginDto)
         {
             var user = await _unitOfWork.Users.GetByEmailAsync(loginDto.Email);
-            if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password) == PasswordVerificationResult.Failed)
+            if (user == null ||
+                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password) == PasswordVerificationResult.Failed ||
+                !user.IsActive)
                 return null;
 
             var token = _jwtService.GenerateToken(new UserDto
@@ -63,7 +65,8 @@ namespace EducationCenter.BLL.Service
                 PasswordHash = _passwordHasher.HashPassword(null, registerDto.Password),
                 Role = registerDto.Role ?? "Student",
                 ProfilePictureUrl = registerDto.ProfilePictureUrl,
-                DepartmentId = registerDto.DepartmentId
+                DepartmentId = registerDto.DepartmentId,
+                IsActive = true
             };
 
             await _unitOfWork.Users.AddAsync(user);
@@ -80,11 +83,11 @@ namespace EducationCenter.BLL.Service
             };
         }
 
-        
+
         public async Task<UserDto?> GetUserByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
-            return user != null ? new UserDto
+            return user != null && user.IsActive ? new UserDto
             {
                 Id = user.Id,
                 Email = user.Email,
@@ -98,7 +101,7 @@ namespace EducationCenter.BLL.Service
         public async Task<bool> UpdateUserAsync(int id, UpdateUserDto updateDto)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
-            if (user == null) return false;
+            if (user == null || !user.IsActive) return false;
 
             user.FullName = updateDto.FullName;
             user.ProfilePictureUrl = updateDto.ProfilePictureUrl;
@@ -110,11 +113,13 @@ namespace EducationCenter.BLL.Service
             return true;
         }
 
-       
+
         public async Task<bool> ChangePasswordAsync(ChangePasswordDto passwordDto)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(passwordDto.UserId);
-            if (user == null || _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, passwordDto.CurrentPassword) == PasswordVerificationResult.Failed)
+            if (user == null ||
+                !user.IsActive ||
+                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, passwordDto.CurrentPassword) == PasswordVerificationResult.Failed)
                 return false;
 
             user.PasswordHash = _passwordHasher.HashPassword(user, passwordDto.NewPassword);
@@ -126,7 +131,7 @@ namespace EducationCenter.BLL.Service
         public async Task<UserDto?> GetUserByEmailAsync(string email)
         {
             var user = await _unitOfWork.Users.GetByEmailAsync(email);
-            return user != null ? new UserDto
+            return user != null && user.IsActive ? new UserDto
             {
                 Id = user.Id,
                 Email = user.Email,
@@ -139,12 +144,17 @@ namespace EducationCenter.BLL.Service
 
         public async Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
+            var user = await _unitOfWork.Users.GetByEmailAsync(forgotPasswordDto.Email);
+            if (user == null || !user.IsActive) return false;
 
+            // Implementation of password reset logic would go here
             return true;
         }
 
         public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
+
+            // Implementation of password reset logic would go here
             return true;
         }
 
@@ -159,7 +169,8 @@ namespace EducationCenter.BLL.Service
                 FullName = d.FullName,
                 Role = d.Role,
                 ProfilePictureUrl = d.ProfilePictureUrl,
-                DepartmentId = d.DepartmentId ?? 0
+                DepartmentId = d.DepartmentId ?? 0,
+                IsActive = d.IsActive
             }).ToList();
         }
 
@@ -169,12 +180,92 @@ namespace EducationCenter.BLL.Service
             if (user != null)
             {
                 _unitOfWork.Users.Delete(user);
-                _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
                 return true;
-
             }
-            _unitOfWork.SaveChangesAsync();
             return false;
+        }
+
+        public async Task<string> CreateUserAsync(CreateUserDto userDto)
+        {
+            // Check if email already exists
+            var existingUser = await _unitOfWork.Users.GetByEmailAsync(userDto.Email);
+            if (existingUser != null)
+            {
+                return "Email is already in use";
+            }
+
+            // Create new user
+            var user = new User
+            {
+                Email = userDto.Email,
+                FullName = userDto.FullName,
+                Role = userDto.Role,
+                IsActive = true,
+            };
+
+            // Hash the password
+            user.PasswordHash = _passwordHasher.HashPassword(user, userDto.Password);
+
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return null; // Return null for success
+        }
+
+        public async Task<string> UpdateUserByAdminAsync(UpdateUserAdminDto updateDto)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(updateDto.Id);
+            if (user == null)
+            {
+                return "User not found";
+            }
+
+            // Update user properties
+            user.Email = updateDto.Email;
+            user.FullName = updateDto.FullName;
+            user.Role = updateDto.Role;
+
+            // If password is provided, update it
+            if (!string.IsNullOrEmpty(updateDto.Password))
+            {
+                user.PasswordHash = _passwordHasher.HashPassword(user, updateDto.Password);
+            }
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return null; // Return null for success
+        }
+
+        public async Task<bool> DeactivateUserAsync(int id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.IsActive = false;
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ActivateUserAsync(int id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.IsActive = true;
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
     }
 }

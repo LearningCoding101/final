@@ -1,0 +1,133 @@
+@model EducationCenter.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">Admin Dashboard</h1>
+                            <p class="text-muted mb-0">System overview and statistics</p>
+                        </div>
+                        <div>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="adminActionsDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-gear me-1"></i> Actions
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminActionsDropdown">
+                                    <li><a class="dropdown-item" href="@Url.Action("UserManagement", "Admin")">Manage
+                                            Users</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Statistics", "Admin")">Detailed
+                                            Statistics</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Reports", "Admin")">Reports</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Course")">Manage
+                                            Courses</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-lg bg-primary-subtle rounded">
+                                <i class="bi bi-people fs-3 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-muted">Total Users</span>
+                            <h3 class="mb-0 fw-bold">@Model.TotalUsers</h3>
+                        </div>
+                    </div>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar bg-primary" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-lg bg-success-subtle rounded">
+                                <i class="bi bi-mortarboard fs-3 text-success"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-muted">Active Courses</span>
+                            <h3 class="mb-0 fw-bold">@Model.ActiveCourses</h3>
+                        </div>
+                    </div>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar bg-success" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-lg bg-warning-subtle rounded">
+                                <i class="bi bi-people-fill fs-3 text-warning"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-muted">Enrollments</span>
+                            <!-- Fixed: Changed TotalEnrollments to ActiveEnrollments -->
+                            <h3 class="mb-0 fw-bold">@Model.ActiveEnrollments</h3>
+                        </div>
+                    </div>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar bg-warning" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-lg bg-info-subtle rounded">
+                                <i class="bi bi-cash-coin fs-3 text-info"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-muted">Monthly Revenue</span>
+                            <!-- Fixed: Changed MonthlyRevenue to TotalRevenue -->
+                            <h3 class="mb-0 fw-bold">@Model.TotalRevenue.ToString("C0")</h3>
+                        </div>
+                    </div>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar bg-info" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of the file remains unchanged -->
+</div>

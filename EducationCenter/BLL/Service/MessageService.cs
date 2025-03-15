@@ -80,15 +80,22 @@ namespace BLL.Service
         {
             var messages = await _unitOfWork.Messages.GetMessagesByDiscussionIdAsync(discussionId);
 
-            return messages.Select(m => new MessageDto
+            var messageDtos = new List<MessageDto>();
+            foreach (var m in messages)
             {
-                Id = m.Id,
-                DiscussionId = m.DiscussionId,
-                UserId = m.UserId,
-                UserName = m.User.FullName,
-                Content = m.Content,
-                Timestamp = m.Timestamp
-            });
+                var user = await _unitOfWork.Users.GetByIdAsync(m.UserId);
+                messageDtos.Add(new MessageDto
+                {
+                    Id = m.Id,
+                    DiscussionId = m.DiscussionId,
+                    UserId = m.UserId,
+                    UserName = user?.FullName ?? "Unknown",
+                    Content = m.Content,
+                    Timestamp = m.Timestamp
+                });
+            }
+
+            return messageDtos;
         }
 
         public async Task<bool> UpdateMessageAsync(int id, int userId, UpdateMessageDto messageDto)

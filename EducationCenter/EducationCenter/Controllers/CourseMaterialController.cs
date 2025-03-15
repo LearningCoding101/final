@@ -25,7 +25,7 @@ namespace EducationCenter.Controllers
             return View(materials);
         }
 
-        public IActionResult Upload(Guid courseId)
+        public IActionResult Upload(int courseId)
         {
             ViewBag.CourseId = courseId;
             return View();

@@ -44,10 +44,10 @@ namespace EducationCenter.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateNewsDto newsDto)
         {
-            if (!ModelState.IsValid)
+/*            if (!ModelState.IsValid)
             {
                 return View(newsDto);
-            }
+            }*/
 
             var result = await _newsService.CreateNewsAsync(newsDto);
             if (result == null)

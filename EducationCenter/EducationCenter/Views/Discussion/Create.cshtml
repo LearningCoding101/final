@@ -1,0 +1,56 @@
+@model BLL.DTO.Discussion.CreateDiscussionDto
+@{
+    ViewData["Title"] = "Create Discussion";
+    var courseId = ViewBag.CourseId;
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h2 fw-bold mb-0">Create New Discussion</h1>
+                        <a href="@Url.Action("Index", "Discussion", new { courseId = courseId })"
+                            class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Discussions
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" asp-controller="Discussion" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="CourseId" value="@courseId" />
+                        <input type="hidden" asp-for="UserId" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">Discussion Title</label>
+                            <input asp-for="Title" class="form-control"
+                                placeholder="Enter a clear, specific title for your discussion" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label fw-bold">Content</label>
+                            <textarea asp-for="Content" class="form-control" rows="8"
+                                placeholder="Describe your topic, question or idea in detail..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-end">
+                            <a href="@Url.Action("Index", "Discussion", new { courseId = courseId })"
+                                class="btn btn-outline-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-chat-dots me-1"></i> Create Discussion
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,87 @@
+@model IEnumerable<BLL.DTO.Discussion.DiscussionDto>
+@{
+    ViewData["Title"] = "Course Discussions";
+    var courseId = Model.Any() ? Model.First().CourseId : 0;
+    var courseTitle = Model.Any() ? Model.First().CourseTitle : "Course Discussions";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">@courseTitle</h1>
+                            <p class="text-muted mb-0">Discussions and Q&A</p>
+                        </div>
+                        <div>
+                            @if (User.IsInRole("Student") || User.IsInRole("Lecturer"))
+                            {
+                                <a href="@Url.Action("Create", "Discussion", new { courseId = courseId })"
+                                    class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-1"></i> New Discussion
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Discussions List -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">All Discussions</h2>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var discussion in Model.OrderByDescending(d => d.PostDate))
+                            {
+                                <a href="@Url.Action("Details", "Discussion", new { discussionId = discussion.Id })"
+                                    class="list-group-item list-group-item-action border-0 mb-3 shadow-sm">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <h5 class="mb-1 fw-bold">@discussion.Title</h5>
+                                        <small class="text-muted">
+                                            @discussion.PostDate.ToString("MMM dd, yyyy, h:mm tt")
+                                        </small>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-person-circle text-muted me-2"></i>
+                                        <small class="text-muted">Posted by @discussion.UserName</small>
+                                    </div>
+                                    <p class="mb-1 text-truncate">@discussion.Content</p>
+                                    <div class="mt-2">
+                                        <span class="badge bg-secondary">
+                                            <i class="bi bi-chat me-1"></i> View Thread
+                                        </span>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-chat-dots text-muted fs-1"></i>
+                            <p class="mt-3 mb-0">No discussions started yet.</p>
+                            @if (User.IsInRole("Student") || User.IsInRole("Lecturer"))
+                            {
+                                <a href="@Url.Action("Create", "Discussion", new { courseId = courseId })"
+                                    class="btn btn-primary mt-3">
+                                    <i class="bi bi-plus-circle me-1"></i> Start First Discussion
+                                </a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

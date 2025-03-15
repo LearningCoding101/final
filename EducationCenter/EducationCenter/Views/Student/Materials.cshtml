@@ -1,0 +1,124 @@
+@model EducationCenter.Models.StudentMaterialsViewModel
+@{
+    ViewData["Title"] = "Course Materials";
+}
+
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">@Model.CourseTitle</h1>
+                            <p class="text-muted mb-0">Course materials and resources</p>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("CourseStudy", "Student", new { enrollmentId = Model.EnrollmentId })" class="btn btn-outline-primary">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Course
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materials List Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 fw-bold mb-0">Learning Materials</h2>
+                        <div>
+                            <span class="badge bg-primary">@Model.Materials.Count() Items</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.Materials?.Any() == true)
+                    {
+                        <div class="row g-4">
+                            @foreach (var material in Model.Materials)
+                            {
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                @{
+                                                    string iconClass = "bi-file-earmark-text";
+                                                    if (material.FileUrl.EndsWith(".pdf")) { iconClass = "bi-file-earmark-pdf"; }
+                                                    else if (material.FileUrl.EndsWith(".doc") || material.FileUrl.EndsWith(".docx")) { iconClass = "bi-file-earmark-word"; }
+                                                    else if (material.FileUrl.EndsWith(".xls") || material.FileUrl.EndsWith(".xlsx")) { iconClass = "bi-file-earmark-excel"; }
+                                                    else if (material.FileUrl.EndsWith(".ppt") || material.FileUrl.EndsWith(".pptx")) { iconClass = "bi-file-earmark-slides"; }
+                                                    else if (material.FileUrl.EndsWith(".jpg") || material.FileUrl.EndsWith(".png") || material.FileUrl.EndsWith(".gif")) { iconClass = "bi-file-earmark-image"; }
+                                                    else if (material.FileUrl.EndsWith(".zip") || material.FileUrl.EndsWith(".rar")) { iconClass = "bi-file-earmark-zip"; }
+                                                }
+                                                <i class="bi @iconClass fs-1 text-primary me-3"></i>
+                                                <div>
+                                                    <h5 class="card-title mb-0">@material.Title</h5>
+                                                    <p class="card-text text-muted small">
+                                                        <i class="bi bi-clock me-1"></i>
+                                                        Uploaded on @material.UploadDate.ToString("MMM dd, yyyy")
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <a href="@material.FileUrl" target="_blank" class="btn btn-primary">
+                                                    <i class="bi bi-download me-1"></i> Download
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-journal-x text-muted fs-1"></i>
+                            <p class="mt-3 mb-0">No materials have been added to this course yet.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h2 class="h4 fw-bold mb-0">Your Progress</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="mb-4">
+                                <label class="form-label d-flex justify-content-between">
+                                    <span>Course progress: <strong>@Model.CurrentProgress%</strong></span>
+                                </label>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         style="width: @Model.CurrentProgress%;"
+                                         aria-valuenow="@Model.CurrentProgress" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <a href="@Url.Action("Progress", "Student", new { enrollmentId = Model.EnrollmentId })"
+                                   class="btn btn-primary">
+                                    <i class="bi bi-graph-up me-1"></i> Update Progress
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,3 +18,4 @@ namespace BLL.DTO.Discussion
         public DateTime PostDate { get; set; }
     }
 }
+

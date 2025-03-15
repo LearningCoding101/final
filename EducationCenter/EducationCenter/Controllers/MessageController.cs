@@ -6,7 +6,6 @@ using System.Security.Claims;
 
 namespace EducationCenter.Controllers
 {
-
     [Authorize]
     public class MessageController : Controller
     {
@@ -20,35 +19,40 @@ namespace EducationCenter.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostMessage(CreateMessageDto messageDto)
+        public async Task<IActionResult> Create(CreateMessageDto messageDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Details", "Discussion", new { discussionId = messageDto.DiscussionId });
-            }
 
-            messageDto.UserId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             var result = await _messageService.CreateMessageAsync(messageDto);
-            if (result == null)
-            {
-                TempData["Error"] = "Unsucessful";
-            }
-
             return RedirectToAction("Details", "Discussion", new { discussionId = messageDto.DiscussionId });
         }
 
-        [Authorize(Roles = "Admin,Lecturer")]
         [HttpPost]
-        public async Task<IActionResult> Delete(int messageId, int discussionId)
+        public async Task<IActionResult> Update(int id, string content, int discussionId)
         {
-            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _messageService.DeleteMessageAsync(messageId, userId);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await _messageService.UpdateMessageAsync(id, userId, new UpdateMessageDto { Content = content });
+
             if (!result)
             {
-                return BadRequest("Unsuccessful");
+                TempData["Error"] = "Failed to update message.";
             }
 
-            return RedirectToAction("Details", "Discussion", new { discussionId });
+            return RedirectToAction("Details", "Discussion", new { discussionId = discussionId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, int discussionId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await _messageService.DeleteMessageAsync(id, userId);
+
+            if (!result)
+            {
+                TempData["Error"] = "Failed to delete message.";
+            }
+
+            return RedirectToAction("Details", "Discussion", new { discussionId = discussionId });
         }
     }
 }

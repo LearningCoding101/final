@@ -33,8 +33,8 @@ namespace BLL.Service
             {
                 CourseId = discussionDto.CourseId,
                 UserId = discussionDto.UserId,
-                Title = discussionDto.Title,
-                Content = discussionDto.Content,
+                Title = discussionDto.Title ?? "Untitled Discussion",
+                Content = discussionDto.Content ?? "No content provided",
                 PostDate = DateTime.UtcNow
             };
 
@@ -45,11 +45,11 @@ namespace BLL.Service
             {
                 Id = discussion.Id,
                 CourseId = discussion.CourseId,
-                CourseTitle = (await _unitOfWork.Courses.GetByIdAsync(discussion.CourseId))?.Title ?? "Unknown",
+                CourseTitle = (await _unitOfWork.Courses.GetByIdAsync(discussion.CourseId))?.Title ?? "Unknown Course",
                 UserId = discussion.UserId,
-                UserName = (await _unitOfWork.Users.GetByIdAsync(discussion.UserId))?.FullName ?? "Unknown",
-                Title = discussion.Title,
-                Content = discussion.Content,
+                UserName = (await _unitOfWork.Users.GetByIdAsync(discussion.UserId))?.FullName ?? "Unknown User",
+                Title = discussion.Title ?? "Untitled Discussion",
+                Content = discussion.Content ?? "No content provided",
                 PostDate = discussion.PostDate
             };
         }
@@ -72,11 +72,11 @@ namespace BLL.Service
             {
                 Id = d.Id,
                 CourseId = d.CourseId,
-                CourseTitle = d.Course.Title,
+                CourseTitle = d.Course?.Title ?? "Unknown Course",
                 UserId = d.UserId,
-                UserName = d.User.FullName,
-                Title = d.Title,
-                Content = d.Content,
+                UserName = d.User?.FullName ?? "Unknown User",
+                Title = d.Title ?? "Untitled Discussion",
+                Content = d.Content ?? "No content provided",
                 PostDate = d.PostDate
             });
         }
@@ -90,11 +90,11 @@ namespace BLL.Service
             {
                 Id = discussion.Id,
                 CourseId = discussion.CourseId,
-                CourseTitle = discussion.Course.Title,
+                CourseTitle = discussion.Course?.Title ?? "Unknown Course",
                 UserId = discussion.UserId,
-                UserName = discussion.User.FullName,
-                Title = discussion.Title,
-                Content = discussion.Content,
+                UserName = discussion.User?.FullName ?? "Unknown User",
+                Title = discussion.Title ?? "Untitled Discussion",
+                Content = discussion.Content ?? "No content provided",
                 PostDate = discussion.PostDate
             };
         }
@@ -108,11 +108,11 @@ namespace BLL.Service
             {
                 Id = d.Id,
                 CourseId = d.CourseId,
-                CourseTitle = d.Course.Title,
+                CourseTitle = d.Course?.Title ?? "Unknown Course",
                 UserId = d.UserId,
-                UserName = d.User.FullName,
-                Title = d.Title,
-                Content = d.Content,
+                UserName = d.User?.FullName ?? "Unknown User",
+                Title = d.Title ?? "Untitled Discussion",
+                Content = d.Content ?? "No content provided",
                 PostDate = d.PostDate
             });
         }
@@ -126,11 +126,11 @@ namespace BLL.Service
             {
                 Id = d.Id,
                 CourseId = d.CourseId,
-                CourseTitle = d.Course.Title,
+                CourseTitle = d.Course?.Title ?? "Unknown Course",
                 UserId = d.UserId,
-                UserName = d.User.FullName,
-                Title = d.Title,
-                Content = d.Content,
+                UserName = d.User?.FullName ?? "Unknown User",
+                Title = d.Title ?? "Untitled Discussion",
+                Content = d.Content ?? "No content provided",
                 PostDate = d.PostDate
             });
         }
@@ -143,9 +143,11 @@ namespace BLL.Service
 
             if (!string.IsNullOrEmpty(discussionDto.Title))
                 discussion.Title = discussionDto.Title;
+            // If title is null or empty, keep existing title
 
             if (!string.IsNullOrEmpty(discussionDto.Content))
                 discussion.Content = discussionDto.Content;
+            // If content is null or empty, keep existing content
 
             _unitOfWork.Discussions.Update(discussion);
             await _unitOfWork.SaveChangesAsync();

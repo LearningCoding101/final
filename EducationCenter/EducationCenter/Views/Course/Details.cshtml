@@ -1,0 +1,117 @@
+﻿@model BLL.DTO.Course.CourseDto
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2 fw-bold">@Model.Title</h1>
+                        <div>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Lecturer"))
+                            {
+                                <a href="@Url.Action("Edit", "Course", new { id = Model.Id })" class="btn btn-outline-primary me-2">
+                                    <i class="bi bi-pencil me-1"></i> Edit Course
+                                </a>
+                            }
+                            <a href="@Url.Action("Index", "Course")" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Courses
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h3 class="h5 fw-bold">Description</h3>
+                                <p>@Model.Description</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h3 class="h5 fw-bold">Course Details</h3>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted">Course Type</h6>
+                                                <p class="card-text fw-bold mb-0">@Model.Type</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted">Duration</h6>
+                                                <p class="card-text fw-bold mb-0">
+                                                    @((Model.EndDate - Model.StartDate).TotalDays) days
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted">Start Date</h6>
+                                                <p class="card-text fw-bold mb-0">@Model.StartDate.ToString("MMMM d, yyyy")</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title text-muted">End Date</h6>
+                                                <p class="card-text fw-bold mb-0">@Model.EndDate.ToString("MMMM d, yyyy")</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="h5 fw-bold mb-0">Enrollment</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p class="fw-bold fs-3 text-center mb-4">@Model.Price.ToString("C")</p>
+                                    
+                                    @if (User.IsInRole("Student"))
+                                    {
+                                        <form asp-action="Enroll" asp-controller="Course" method="post">
+                                            <input type="hidden" name="courseId" value="@Model.Id" />
+                                            <button type="submit" class="btn btn-success w-100">
+                                                <i class="bi bi-journal-check me-1"></i> Enroll Now
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (!User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("Login", "Account")" class="btn btn-primary w-100">
+                                            <i class="bi bi-box-arrow-in-right me-1"></i> Log in to Enroll
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h3 class="h5 fw-bold mb-0">Instructor</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="bi bi-person-circle text-primary fs-1"></i>
+                                    </div>
+                                    <h5>Lecturer #@Model.LecturerId</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

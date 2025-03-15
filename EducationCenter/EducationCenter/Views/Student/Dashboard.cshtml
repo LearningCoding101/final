@@ -72,8 +72,8 @@
                                             <span class="badge @badgeClass">@enrollment.PaymentStatus</span>
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("Details", "Course", new { id = enrollment.CourseId })"
-                                               class="btn btn-sm btn-outline-primary">Continue Learning</a>
+                                            <a href="@Url.Action("CourseStudy", "Student", new { enrollmentId = enrollment.Id })"
+   class="btn btn-sm btn-outline-primary">Continue Learning</a>
                                         </td>
                                     </tr>
                                 }

@@ -19,7 +19,7 @@ namespace BLL.Service
         }
         public async Task<CourseMaterialDto> AddMaterialAsync(CreateCourseMaterialDto materialDto)
         {
-            var courseExists = await _unitOfWork.CourseMaterials.GetByIdAsync(materialDto.CourseId);
+            var courseExists = await _unitOfWork.Courses.GetByIdAsync(materialDto.CourseId);
             if (courseExists == null)
             {
                 Console.WriteLine("Course doesnt exist");
@@ -76,7 +76,9 @@ namespace BLL.Service
         public async Task<CourseMaterialDto?> GetMaterialByIdAsync(int id)
         {
             var material = await _unitOfWork.CourseMaterials.GetByIdAsync(id);
+            var course = await _unitOfWork.Courses.GetByIdAsync(material.CourseId);
             if (material == null) return null;
+            material.Course = course;
 
             return new CourseMaterialDto
             {

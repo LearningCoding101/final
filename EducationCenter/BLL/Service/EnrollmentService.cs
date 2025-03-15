@@ -60,7 +60,7 @@ namespace BLL.Service
                 CourseId = enrollment.CourseId,
                 CourseTitle = (await _unitOfWork.Courses.GetByIdAsync(enrollment.CourseId))?.Title ?? "Unknown",
                 EnrollmentDate = enrollment.EnrollmentDate,
-                PaymentStatus = enrollment.PaymentStatus,
+                PaymentStatus = enrollment.PaymentStatus ?? "Pending",
                 Progress = enrollment.Progress
             };
         }
@@ -73,11 +73,11 @@ namespace BLL.Service
             {
                 Id = e.Id,
                 UserId = e.UserId,
-                StudentName = e.User.FullName,
+                StudentName = e.User?.FullName ?? "Unknown",
                 CourseId = e.CourseId,
-                CourseTitle = e.Course.Title,
+                CourseTitle = e.Course?.Title ?? "Unknown",
                 EnrollmentDate = e.EnrollmentDate,
-                PaymentStatus = e.PaymentStatus,
+                PaymentStatus = e.PaymentStatus ?? "Pending",
                 Progress = e.Progress
             });
         }
@@ -91,15 +91,26 @@ namespace BLL.Service
             {
                 Id = enrollment.Id,
                 UserId = enrollment.UserId,
-                StudentName = enrollment.User.FullName,
+                StudentName = enrollment.User?.FullName ?? "Unknown",
                 CourseId = enrollment.CourseId,
-                CourseTitle = enrollment.Course.Title,
+                CourseTitle = enrollment.Course?.Title ?? "Unknown",
                 EnrollmentDate = enrollment.EnrollmentDate,
-                PaymentStatus = enrollment.PaymentStatus,
+                PaymentStatus = enrollment.PaymentStatus ?? "Pending",
                 Progress = enrollment.Progress
             };
         }
+        public async Task<bool> UpdateProgressAsync(int enrollmentId, int progress)
+        {
+            var enrollment = await _unitOfWork.Enrollments.GetByIdAsync(enrollmentId);
+            if (enrollment == null) return false;
 
+
+            enrollment.Progress = Math.Clamp(progress, MIN_PROGRESS, MAX_PROGRESS);
+
+            _unitOfWork.Enrollments.Update(enrollment);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
         public async Task<IEnumerable<EnrollmentDto>> GetEnrollmentsByCourseAsync(int courseId)
         {
             var enrollments = await _unitOfWork.Enrollments.GetByCourseAsync(courseId);
@@ -108,11 +119,11 @@ namespace BLL.Service
             {
                 Id = e.Id,
                 UserId = e.UserId,
-                StudentName = e.User.FullName,
+                StudentName = e.User?.FullName ?? "Unknown",
                 CourseId = e.CourseId,
-                CourseTitle = e.Course.Title,
+                CourseTitle = e.Course?.Title ?? "Unknown",
                 EnrollmentDate = e.EnrollmentDate,
-                PaymentStatus = e.PaymentStatus,
+                PaymentStatus = e.PaymentStatus ?? "Pending",
                 Progress = e.Progress
             });
         }

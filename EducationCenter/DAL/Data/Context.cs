@@ -24,6 +24,10 @@ namespace DAL.Data
         public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .Property(u => u.IsActive)
+                .HasDefaultValue(true);
+
             // Define relationships
             modelBuilder.Entity<Enrollment>()
                 .HasOne(e => e.User)

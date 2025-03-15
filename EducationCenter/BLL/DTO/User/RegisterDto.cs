@@ -18,7 +18,7 @@ namespace BLL.DTO.User
         [Required]
         public string FullName { get; set; }
 
-        public string Role { get; set; } = "Student"; // Default role is "Student"
+        public string Role { get; set; } = "Admin"; // Default role is "Student"
 
         public string ConfirmPassword { get; set; }
         public string ProfilePictureUrl { get; set; } = "";

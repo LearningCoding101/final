@@ -1,59 +1,150 @@
 ﻿@using BLL.DTO.User
-
 @model UserDto
-
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "My Profile";
 }
 
-<h1>Profile</h1>
-
-<div>
-    <img src="@Model.ProfilePictureUrl" alt="Profile Picture" class="img-thumbnail" />
-    <h4>@Model.FullName</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2"></dt>
-            Email
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Email
-        </dd>
-        <dt class="col-sm-2">
-            Role
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Role
-        </dd>
-        <dt class="col-sm-2">
-            Department ID
-        </dt>
-        <dd class="col-sm-10">
-            @Model.DepartmentId
-        </dd>
-    </dl>
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h3 fw-bold mb-0">
+                            <i class="bi bi-person-circle me-2"></i>My Profile
+                        </h1>
+                        <a href="#editProfileModal" class="btn btn-primary" data-bs-toggle="modal">
+                            <i class="bi bi-pencil-square me-1"></i>Edit Profile
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-4 mb-4 mb-md-0">
+                            <div class="text-center">
+                                @if (string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                                {
+                                    <div class="avatar-placeholder mb-3">
+                                        <i class="bi bi-person-fill display-1 text-muted"></i>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@Model.ProfilePictureUrl" alt="@Model.FullName"
+                                        class="img-fluid rounded-circle mb-3" style="max-width: 200px; height: auto;" />
+                                }
+                                <h3 class="h4 fw-bold mb-1">@Model.FullName</h3>
+                                <span class="badge bg-primary mb-3">@Model.Role</span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-header bg-light py-3">
+                                    <h2 class="h5 fw-bold mb-0">
+                                        <i class="bi bi-info-circle me-2"></i>Account Information
+                                    </h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4 fw-bold">Email Address:</div>
+                                        <div class="col-md-8">@Model.Email</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4 fw-bold">Role:</div>
+                                        <div class="col-md-8">@Model.Role</div>
+                                    </div>
+                                    @if (Model.DepartmentId > 0)
+                                    {
+                                        <div class="row mb-3">
+                                            <div class="col-md-4 fw-bold">Department:</div>
+                                            <div class="col-md-8">Department @Model.DepartmentId</div>
+                                        </div>
+                                    }
+                                    <hr />
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="#changePasswordModal" class="btn btn-outline-secondary btn-sm"
+                                            data-bs-toggle="modal">
+                                            <i class="bi bi-key me-1"></i>Change Password
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-@* <form asp-action="UpdateProfile" method="post">
-    <div class="form-group">
-        <label asp-for="FullName"></label>
-        <input asp-for="FullName" class="form-control" />
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="UpdateProfile" method="post">
+                <div class="modal-body">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="FullName" value="@Model.FullName" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Profile Picture URL</label>
+                        <input type="url" class="form-control" name="ProfilePictureUrl"
+                            value="@Model.ProfilePictureUrl" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="ChangePassword" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="UserId" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" class="form-control" name="CurrentPassword" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-control" name="NewPassword" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" name="ConfirmNewPassword" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Role"></label>
-        <input asp-for="Role" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="ProfilePictureUrl"></label>
-        <input asp-for="ProfilePictureUrl" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="DepartmentId"></label>
-        <input asp-for="DepartmentId" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form> *@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,250 @@
+@model IEnumerable<BLL.DTO.News.NewsDto>
+@{
+    ViewData["Title"] = "News and Updates";
+    var newsItems = Model.Where(n => n.Type == "News").ToList();
+    var events = Model.Where(n => n.Type == "Event").ToList();
+    var projects = Model.Where(n => n.Type == "Project").ToList();
+    var partnerships = Model.Where(n => n.Type == "Partnership").ToList();
+}
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h2 fw-bold mb-1">News and Updates</h1>
+                            <p class="text-muted mb-0">Stay informed about our latest activities and announcements</p>
+                        </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div>
+                                <a href="@Url.Action("Create", "News")" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-1"></i> Add News
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <ul class="nav nav-pills nav-justified mb-3" id="news-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-newspaper me-1"></i> News
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-calendar-event me-1"></i> Events
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-folder-fill me-1"></i> Projects
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="partnerships-tab" data-bs-toggle="tab" data-bs-target="#partnerships" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-people-fill me-1"></i> Partnerships
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="newsTabContent">
+        <!-- News Tab -->
+        <div class="tab-pane fade show active" id="news" role="tabpanel">
+            <div class="row">
+                @if (newsItems.Any())
+                {
+                    foreach (var item in newsItems.OrderByDescending(n => n.PublishDate))
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                                {
+                                    <img src="@item.ThumbnailUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">@item.Title</h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        <i class="bi bi-calendar me-1"></i> @item.PublishDate.ToString("MMMM dd, yyyy")
+                                    </p>
+                                    <p class="card-text">@(item.Content.Length > 150 ? item.Content.Substring(0, 150) + "..." : item.Content)</p>
+                                    <a href="@Url.Action("Details", "News", new { id = item.Id })" class="btn btn-outline-primary mt-2">
+                                        Read More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle me-2"></i> No news items available at this time.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Events Tab -->
+        <div class="tab-pane fade" id="events" role="tabpanel">
+            <div class="row">
+                @if (events.Any())
+                {
+                    foreach (var item in events.OrderByDescending(e => e.EventDate ?? e.PublishDate))
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                                {
+                                    <img src="@item.ThumbnailUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                }
+                                <div class="card-body">
+                                    <span class="badge bg-primary mb-2">Event</span>
+                                    <h5 class="card-title fw-bold">@item.Title</h5>
+                                    
+                                    @if (item.EventDate.HasValue)
+                                    {
+                                        <p class="card-text text-muted small mb-1">
+                                            <i class="bi bi-calendar-event me-1"></i> @item.EventDate.Value.ToString("MMMM dd, yyyy")
+                                        </p>
+                                    }
+                                    
+                                    @if (!string.IsNullOrEmpty(item.EventLocation))
+                                    {
+                                        <p class="card-text text-muted small mb-2">
+                                            <i class="bi bi-geo-alt me-1"></i> @item.EventLocation
+                                        </p>
+                                    }
+                                    
+                                    <p class="card-text">@(item.Content.Length > 120 ? item.Content.Substring(0, 120) + "..." : item.Content)</p>
+                                    <a href="@Url.Action("Details", "News", new { id = item.Id })" class="btn btn-outline-primary mt-2">
+                                        Event Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle me-2"></i> No upcoming events at this time.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div class="tab-pane fade" id="projects" role="tabpanel">
+            <div class="row">
+                @if (projects.Any())
+                {
+                    foreach (var item in projects.OrderByDescending(p => p.PublishDate))
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                                {
+                                    <img src="@item.ThumbnailUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                }
+                                <div class="card-body">
+                                    <span class="badge bg-success mb-2">Project</span>
+                                    <h5 class="card-title fw-bold">@item.Title</h5>
+                                    <p class="card-text">@(item.Content.Length > 150 ? item.Content.Substring(0, 150) + "..." : item.Content)</p>
+                                    <a href="@Url.Action("Details", "News", new { id = item.Id })" class="btn btn-outline-success mt-2">
+                                        View Project
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle me-2"></i> No research projects available at this time.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Partnerships Tab -->
+        <div class="tab-pane fade" id="partnerships" role="tabpanel">
+            <div class="row">
+                @if (partnerships.Any())
+                {
+                    foreach (var item in partnerships.OrderByDescending(p => p.PublishDate))
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                                {
+                                    <img src="@item.ThumbnailUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                }
+                                <div class="card-body">
+                                    <span class="badge bg-info mb-2">Partnership</span>
+                                    <h5 class="card-title fw-bold">@item.Title</h5>
+                                    <p class="card-text">@(item.Content.Length > 150 ? item.Content.Substring(0, 150) + "..." : item.Content)</p>
+                                    <a href="@Url.Action("Details", "News", new { id = item.Id })" class="btn btn-outline-info mt-2">
+                                        Learn More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle me-2"></i> No partnership information available at this time.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+        
+        .nav-pills .nav-link {
+            color: #495057;
+            background-color: #f8f9fa;
+            margin-right: 5px;
+        }
+        
+        .nav-pills .nav-link.active {
+            color: #fff;
+            background-color: #0d6efd;
+        }
+    </style>
+}
