@@ -21,8 +21,8 @@ namespace EducationCenter
 
             // Register the DbContext
             builder.Services.AddDbContext<Context>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("DAL")));
             // Register the UnitOfWork
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

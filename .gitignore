@@ -1,74 +1,60 @@
-# Build artifacts
-bin/
-obj/
-out/
-
-# User-specific files
+# Visual Studio-specific files
 .vs/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
-# Logs
-*.log
-logs/
-log/
+# Build artifacts
+bin/
+obj/
+out/
 
-# Compiled files
-*.dll
-*.exe
-*.pdb
-*.appx
-*.appxbundle
-*.msi
+# Dependencies
+packages/
 *.nupkg
 *.snupkg
-*.swp
-*.bak
-*.cache
-*.ilk
+project.lock.json
+project.assets.json
+
+# ASP.NET Core-specific files
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+.env
+
+# Entity Framework
+
+# Logs and database
+logs/
 *.log
-*.map
-*.dmp
-*.csproj.user
-
-# Dependency directories
-node_modules/
-bower_components/
-jspm_packages/
-
-# NuGet Packages
-*.nupkg
-packages/
-.nuget/
-
-# Publish artifacts
-publish/
-wwwroot/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Rider / JetBrains
-.idea/
-*.iml
-
-# Visual Studio Code
-.vscode/
-
-# Resharper
-*.DotSettings.user
-_ReSharper.Caches/
-
-# Entity Framework Migrations
-Migrations/
-
-# Database
+*.tlog
 *.mdf
 *.ldf
 *.sqlite
-*.db
+
+# Node.js dependencies (if using frontend assets)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Publish outputs
+publish/
+wwwroot/dist/
+wwwroot/node_modules/
+
+# JetBrains Rider
+.idea/
+*.iml
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Code coverage
+coverage/
+*.coverlet/
+*.coverage
+
+# Docker
+docker-compose.override.yml
