@@ -40,6 +40,10 @@ namespace BLL.Service
                 throw new InvalidOperationException("User or Course not found.");
             }
 
+            var existingEnrollment = await _unitOfWork.Enrollments.GetEnrollmentsByUserIdAsync(user.Id);
+
+            if(existingEnrollment.FirstOrDefault(m=> m.CourseId == enrollmentDto.CourseId) != null) throw new InvalidOperationException("Course already enrolled.");
+
             var enrollment = new Enrollment
             {
                 UserId = enrollmentDto.UserId,

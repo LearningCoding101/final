@@ -3,6 +3,13 @@
     ViewData["Title"] = "Student Dashboard";
 }
 
+@if (TempData["Error"] != null)
+{
+    <div class="error-message">
+        <strong>Error:</strong> @TempData["Error"]
+    </div>
+}
+
 <div class="container-fluid py-4">
     <!-- Dashboard Header -->
     <div class="row mb-4">
@@ -197,17 +204,19 @@
                 });
             });
         });
-    </script>
-}.classList.add('active');
-                listViewBtn.classList.remove('active');
-            });
-
-            listViewBtn.addEventListener('click', function () {
-                gridView.classList.add('d-none');
-                listView.classList.remove('d-none');
-                gridViewBtn.classList.remove('active');
-                listViewBtn.classList.add('active');
-            });
-        });
+//asad
     </script>
 }
+
+@*                     </script> *@
+@* }.classList.add('active'); *@
+@*                 listViewBtn.classList.remove('active'); *@
+@*             }); *@
+
+@*             listViewBtn.addEventListener('click', function () { *@
+@*                 gridView.classList.add('d-none'); *@
+@*                 listView.classList.remove('d-none'); *@
+@*                 gridViewBtn.classList.remove('active'); *@
+@*                 listViewBtn.classList.add('active'); *@
+@*             }); *@
+@*         }); *@

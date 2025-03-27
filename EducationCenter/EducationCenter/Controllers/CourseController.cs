@@ -257,24 +257,31 @@ namespace EducationCenter.Controllers
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> Enroll(int courseId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
+            try
             {
-                return Unauthorized();
-            }
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId == null)
+                {
+                    return Unauthorized();
+                }
 
-            var result = await _enrollmentService.EnrollStudentAsync(new CreateEnrollmentDto
-            {
-                CourseId = courseId,
-                UserId = Int32.Parse(userId)
-            });
-            if (result == null)
-            {
-                TempData["Error"] = "Unsuccessful enrollment";
-                return RedirectToAction("Details", "Course", new { id = courseId });
-            }
+                var result = await _enrollmentService.EnrollStudentAsync(new CreateEnrollmentDto
+                {
+                    CourseId = courseId,
+                    UserId = Int32.Parse(userId)
+                });
+                if (result == null)
+                {
+                    TempData["Error"] = "Unsuccessful enrollment";
+                    return RedirectToAction("Details", "Course", new { id = courseId });
+                }
 
-            return RedirectToAction("MyCourses", "Enrollment");
+            }
+            catch(InvalidOperationException ex)
+            {
+                TempData["Error"] = "Already enrolled duh";
+            }
+            return RedirectToAction("Dashboard", "Student");
         }
 
 

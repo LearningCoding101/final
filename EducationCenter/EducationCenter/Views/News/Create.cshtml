@@ -77,14 +77,14 @@
 
                         <!-- Thumbnail Upload or URL -->
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="ThumbnailFile" class="form-label fw-bold">Thumbnail Image</label>
-                                    <input type="file" class="form-control" id="ThumbnailFile" name="ThumbnailFile"
-                                        accept="image/*" />
-                                    <div class="form-text">Upload an image for the news thumbnail</div>
-                                </div>
-                            </div>
+                            @* <div class="col-md-6"> *@
+                            @*     <div class="form-group mb-3"> *@
+                            @*         <label for="ThumbnailFile" class="form-label fw-bold">Thumbnail Image</label> *@
+                            @*         <input type="file" class="form-control" id="ThumbnailFile" name="ThumbnailFile" *@
+                            @*             accept="image/*" /> *@
+                            @*         <div class="form-text">Upload an image for the news thumbnail</div> *@
+                            @*     </div> *@
+                            @* </div> *@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="ThumbnailUrl" class="form-label fw-bold">Or Thumbnail URL</label>
@@ -93,7 +93,6 @@
                                         <input asp-for="ThumbnailUrl" class="form-control"
                                             placeholder="Or enter image URL" />
                                     </div>
-                                    <span asp-validation-for="ThumbnailUrl" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

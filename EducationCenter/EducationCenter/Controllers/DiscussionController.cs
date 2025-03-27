@@ -1,6 +1,5 @@
 ﻿using BLL.DTO.Discussion;
 using BLL.Interface;
-using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
